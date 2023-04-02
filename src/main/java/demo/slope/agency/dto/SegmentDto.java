@@ -1,17 +1,16 @@
 package demo.slope.agency.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalTime;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class SegmentDto {
     private String from;
     private String to;
-    private LocalTime departureDate;
-    private LocalTime arrivalDate;
+    private LocalDateTime departureDate;
+    private LocalDateTime arrivalDate;
     private String flightNumber;
 }

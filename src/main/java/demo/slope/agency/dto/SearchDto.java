@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalTime;
+import java.util.Date;
 
 @Data
 public class SearchDto {
@@ -14,5 +14,5 @@ public class SearchDto {
     @NotNull
     @Size(min = 3, max = 3)
     private String to;
-    private LocalTime departureDate;
+    private Date departureDate;
 }

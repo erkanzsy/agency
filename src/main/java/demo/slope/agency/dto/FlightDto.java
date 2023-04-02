@@ -1,12 +1,14 @@
 package demo.slope.agency.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@Builder
 public class FlightDto {
     private double amount;
     private String currency;
-    private ArrayList<SegmentDto> segments;
+    private List<SegmentDto> segments;
 }
