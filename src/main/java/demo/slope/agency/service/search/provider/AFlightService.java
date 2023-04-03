@@ -1,8 +1,8 @@
 package demo.slope.agency.service.search.provider;
 
 
-import com.google.gson.Gson;
 import demo.slope.agency.dto.FlightDto;
+import demo.slope.agency.dto.ProviderResponseDto;
 import demo.slope.agency.dto.SearchDto;
 import demo.slope.agency.dto.SegmentDto;
 
@@ -10,15 +10,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class AFlightService implements ProviderService {
+public class AFlightService extends ProviderService {
     @Override
     public String provider() {
         return "a-service";
@@ -28,51 +25,47 @@ public class AFlightService implements ProviderService {
     public List<FlightDto> flight(SearchDto searchDto, HttpResponse<String> response) {
         List<FlightDto> flights = new ArrayList<>();
 
-        SegmentDto segment = SegmentDto.builder()
-                .to(searchDto.getTo())
-                .from(searchDto.getFrom())
-                .flightNumber(String.valueOf((int) (Math.random()) * 49 + 100))
-                .departureDate(this.convertToLocalDateViaInstant(searchDto.getDepartureDate()))
-                .arrivalDate(this.convertToLocalDateViaInstant(searchDto.getDepartureDate()).plus(70, ChronoUnit.MINUTES))
-                .build();
+        ProviderResponseDto[] providerResponse = parseResponse(response);
 
-        List<SegmentDto> segments = new ArrayList<>();
-        segments.add(segment);
+        for (ProviderResponseDto providerResponseDto : providerResponse)
+        {
+            int price = providerResponseDto.getPrice();
 
-        FlightDto flight = FlightDto.builder()
-                .segments(segments)
-                .uuid(UUID.randomUUID().toString())
-                .provider(provider())
-                .amount((int) (Math.random()) * 49 + 1000)
-                .currency("TRY")
-                .build();
+            if (price <= 0)
+            {
+                continue;
+            }
 
-        flights.add(flight);
+            SegmentDto segment = SegmentDto.builder()
+                    .to(searchDto.getTo())
+                    .from(searchDto.getFrom())
+                    .flightNumber(Integer.toString(providerResponseDto.getFlightNumber()))
+                    .departureDate(this.parseDate(providerResponseDto.getLocalTime(), 0))
+                    .arrivalDate(this.parseDate(providerResponseDto.getLocalTime(), 70))
+                    .build();
+
+            FlightDto flight = FlightDto.builder()
+                    .segments(Arrays.asList(segment))
+                    .uuid(UUID.randomUUID().toString())
+                    .provider(provider())
+                    .amount(price)
+                    .currency("TRY")
+                    .build();
+
+            flights.add(flight);
+        }
 
         return flights;
     }
 
     @Override
     public HttpRequest request(SearchDto searchDto) {
-        Gson gson = new Gson();
-        String body = gson.toJson(searchDto);
-
-        HttpRequest request = null;
         try {
-            request = HttpRequest.newBuilder()
-                    .uri(new URI("https://a-service.free.beeceptor.com/a"))
-                    .POST(HttpRequest.BodyPublishers.ofString(body))
+            return HttpRequest.newBuilder()
+                    .uri(new URI("https://642aaebd00dfa3b5474bff75.mockapi.io/api/v1/a-service/a-service"))
                     .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-
-        return request;
-    }
-
-    public LocalDateTime convertToLocalDateViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
     }
 }
