@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class BFlightService implements ProviderService {
     @Override
@@ -30,7 +31,7 @@ public class BFlightService implements ProviderService {
         SegmentDto segment = SegmentDto.builder()
                 .to(searchDto.getTo())
                 .from(searchDto.getFrom())
-                .flightNumber(String.valueOf((int) (Math.random() * 49) + 100))
+                .flightNumber(String.valueOf((int) (Math.random()) * 49 + 100))
                 .departureDate(this.convertToLocalDateViaInstant(searchDto.getDepartureDate()))
                 .arrivalDate(this.convertToLocalDateViaInstant(searchDto.getDepartureDate()).plus(70, ChronoUnit.MINUTES))
                 .build();
@@ -40,6 +41,8 @@ public class BFlightService implements ProviderService {
 
         FlightDto flight = FlightDto.builder()
                 .segments(segments)
+                .uuid(UUID.randomUUID().toString())
+                .provider(provider())
                 .amount((int) (Math.random()) * 49 + 1000)
                 .currency("TRY")
                 .build();
