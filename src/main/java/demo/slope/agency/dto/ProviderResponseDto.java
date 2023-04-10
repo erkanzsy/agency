@@ -8,5 +8,4 @@ public class ProviderResponseDto {
     int price;
     int flightNumber;
     String priceClass;
-    long localTime;
 }

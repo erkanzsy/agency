@@ -11,6 +11,7 @@ import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 public abstract class ProviderService {
@@ -18,11 +19,9 @@ public abstract class ProviderService {
     public abstract List<FlightDto> flight(SearchDto searchDto, HttpResponse<String> response);
     public abstract HttpRequest request(SearchDto searchDto);
 
-    public LocalDateTime parseDate(long timestamp, int extraMinutes) {
-
-        LocalDateTime time = new Timestamp(timestamp).toLocalDateTime();
-
-        return time.plus(extraMinutes, ChronoUnit.MINUTES);
+    public Date parseDate(Date date, int extraMinutes) {
+        long curTimeInMs = date.getTime();
+        return new Date(curTimeInMs + (extraMinutes * 60000));
     }
 
     public ProviderResponseDto[] parseResponse(HttpResponse<String> response)

@@ -40,8 +40,8 @@ public class AFlightService extends ProviderService {
                     .to(searchDto.getTo())
                     .from(searchDto.getFrom())
                     .flightNumber(Integer.toString(providerResponseDto.getFlightNumber()))
-                    .departureDate(this.parseDate(providerResponseDto.getLocalTime(), 0))
-                    .arrivalDate(this.parseDate(providerResponseDto.getLocalTime(), 70))
+                    .departureDate(this.parseDate(searchDto.getDepartureDate(), 0))
+                    .arrivalDate(this.parseDate(searchDto.getDepartureDate(), 70))
                     .build();
 
             FlightDto flight = FlightDto.builder()
