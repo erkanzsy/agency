@@ -19,7 +19,7 @@ public class HistoryController {
     @Autowired
     HistoryService historyService;
 
-    @GetMapping("/v1")
+    @GetMapping("/v1.json")
     public ResponseEntity<List<HistoryDto>> history(@Validated @RequestBody SearchDto searchDto) {
         return ResponseEntity.ok(historyService.historyBySearchDto(searchDto));
     }
