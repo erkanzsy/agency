@@ -16,7 +16,9 @@ import java.util.List;
 
 public abstract class ProviderService {
     public abstract String provider();
+
     public abstract List<FlightDto> flight(SearchDto searchDto, HttpResponse<String> response);
+
     public abstract HttpRequest request(SearchDto searchDto);
 
     public Date parseDate(Date date, int extraMinutes) {
@@ -24,8 +26,7 @@ public abstract class ProviderService {
         return new Date(curTimeInMs + (extraMinutes * 60000));
     }
 
-    public ProviderResponseDto[] parseResponse(HttpResponse<String> response)
-    {
+    public ProviderResponseDto[] parseResponse(HttpResponse<String> response) {
         Gson gson = new GsonBuilder().create();
         return gson.fromJson(response.body(), ProviderResponseDto[].class);
     }

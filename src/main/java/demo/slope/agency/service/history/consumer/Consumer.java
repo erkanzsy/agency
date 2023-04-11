@@ -1,4 +1,4 @@
-package demo.slope.agency.service.history.listener;
+package demo.slope.agency.service.history.consumer;
 
 import demo.slope.agency.dto.FlightDto;
 import demo.slope.agency.dto.SegmentDto;
