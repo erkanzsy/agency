@@ -23,7 +23,7 @@ curl --request POST \
 
 ````
 curl --request POST \
-  --url http://localhost:8080/history/v1.json \
+  --url http://localhost:8080/v1/history.json \
   --header 'Content-Type: application/json' \
   --data '{
 	"from": "ERK",
