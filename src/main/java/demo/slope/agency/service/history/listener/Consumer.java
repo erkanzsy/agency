@@ -7,8 +7,7 @@ import demo.slope.agency.repository.HistoryRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -22,7 +21,9 @@ public class Consumer {
     }
 
     @KafkaListener(topics = "${kafka.topic.history}", groupId = "${kafka.group}")
-    public void listenMessage(FlightDto flightDto) {
+    public void listenMessage(List<FlightDto> flightDtos) {
+        FlightDto flightDto = flightDtos.stream().min(Comparator.comparingDouble(FlightDto::getAmount)).get();
+
         List<SegmentDto> segments = flightDto.getSegments();
 
         History history = History.builder()
@@ -36,15 +37,10 @@ public class Consumer {
 
         if (history1 == null)
         {
-            System.out.println("persisted price for" + history);
             historyRepository.save(history);
         } else if (history1.getAmount() > history.getAmount()) {
-            System.out.println("updated price for" + history);
             historyRepository.delete(history1);
             historyRepository.save(history);
         }
-
-        System.out.println("saved consumer");
-        System.out.println(history);
     }
 }

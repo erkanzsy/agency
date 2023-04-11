@@ -24,14 +24,6 @@ public class HistoryHandler implements Handler {
 
     @Override
     public void handle(ChainDto chainDto) {
-        List<FlightDto> flights = chainDto.getFlights();
-
-        FlightDto flightDto = flights.stream().min(Comparator.comparingDouble(FlightDto::getAmount)).get();
-
-        System.out.println("started");
-
-        template.send(topic, flightDto);
-
-        System.out.println("pushed");
+        template.send(topic, chainDto.getFlights());
     }
 }

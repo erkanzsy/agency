@@ -2,8 +2,6 @@ package demo.slope.agency.controller;
 
 import demo.slope.agency.entity.History;
 import demo.slope.agency.repository.HistoryRepository;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/history")
